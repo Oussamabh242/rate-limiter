@@ -6,7 +6,6 @@ import (
 	"time"
 )
 
-
 const (
 	SECOND = time.Second
 	MINUTE = time.Minute
@@ -23,7 +22,7 @@ type X struct {
 type Bucket struct {
 	Store            map[string]*X
 	ClearTime        time.Duration
-  BlockTime        time.Duration
+	BlockTime        time.Duration
 	MaxReq           int
 	MaxIncactiveTime time.Duration
 	Mu               sync.Mutex
@@ -32,19 +31,19 @@ type Bucket struct {
 func NewBucket(Period, BlockTime time.Duration, MaxReq int, MaxIncactiveTime time.Duration) *Bucket {
 	var store map[string]*X = map[string]*X{}
 	b := Bucket{
-    BlockTime: BlockTime,
+		BlockTime:        BlockTime,
 		MaxReq:           MaxReq,
 		Store:            store,
-		ClearTime:           Period,
+		ClearTime:        Period,
 		MaxIncactiveTime: MaxIncactiveTime,
 	}
 	return &b
 }
 
 func (b *Bucket) CheckBlocked(ip string) (found bool, value bool) {
-  b.Mu.Lock()
+	b.Mu.Lock()
 	val, found := b.Store[ip]
-  b.Mu.Unlock()
+	b.Mu.Unlock()
 	if !found {
 		value = true
 		return found, value
@@ -59,7 +58,7 @@ func Kill(lastReq time.Time, MaxInactive time.Duration) bool {
 func (b *Bucket) Clean() {
 	ticker := time.NewTicker(b.ClearTime)
 	for {
-    fmt.Println("+++WORKING+++")
+		fmt.Println("+++WORKING+++")
 		select {
 		case <-ticker.C:
 			for ip, user := range b.Store {

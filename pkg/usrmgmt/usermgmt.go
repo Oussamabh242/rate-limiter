@@ -7,9 +7,9 @@ import (
 
 func RestoreActivity(b *bucket.Bucket, IPAddress string) {
 	user, found := b.Store[IPAddress]
-  if !found {
-    return
-  }
+	if !found {
+		return
+	}
 	start := user.BlockStartTime.Add(b.BlockTime)
 	if user.Blocked && start.Before(time.Now()) {
 		user.Blocked = false
@@ -27,14 +27,13 @@ func createUser(b *bucket.Bucket, ip string) {
 func IncRequests(b *bucket.Bucket, ip string) bool {
 
 	//creating user if first request
-  b.Mu.Lock()
+	b.Mu.Lock()
 	_, found := b.Store[ip]
 	if !found {
 		createUser(b, ip)
 	}
 
-  b.Store[ip].LastRequest = time.Now()
-
+	b.Store[ip].LastRequest = time.Now()
 
 	// trying to restore user actitvity in case he is blocked
 	if b.Store[ip].Blocked {
@@ -45,13 +44,13 @@ func IncRequests(b *bucket.Bucket, ip string) bool {
 		b.Store[ip].BlockStartTime = time.Now()
 		b.Store[ip].Blocked = true
 		b.Store[ip].RequestNumber++
-    b.Mu.Unlock()
+		b.Mu.Unlock()
 		return true
 
 	} else {
 		b.Store[ip].RequestNumber++
 	}
-  b.Mu.Unlock()
+	b.Mu.Unlock()
 	return false
 
 }

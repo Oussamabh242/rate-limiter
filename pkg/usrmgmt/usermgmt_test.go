@@ -9,7 +9,7 @@ import (
 func TestUsrMgmt(t *testing.T) {
 	t.Run("Restoring activity for blocked ip adress after time passed", func(t *testing.T) {
 		ip := "192.168.1.19"
-		b := bucket.NewBucket(1*bucket.SECOND , 1*time.Second, 3, time.Hour)
+		b := bucket.NewBucket(1*bucket.SECOND, 1*time.Second, 3, time.Hour)
 		insertUser(b, ip, true, 3)
 		time.Sleep(2 * time.Second)
 		RestoreActivity(b, "192.168.1.19")
@@ -23,7 +23,7 @@ func TestUsrMgmt(t *testing.T) {
 
 	t.Run("trying to Restore activity for blocked ip adress before time passed", func(t *testing.T) {
 		ip := "192.168.1.19"
-		b := bucket.NewBucket(1*bucket.SECOND,1*time.Second, 10, time.Hour)
+		b := bucket.NewBucket(1*bucket.SECOND, 1*time.Second, 10, time.Hour)
 		insertUser(b, ip, true, 3)
 		time.Sleep(0 * time.Second)
 		RestoreActivity(b, "192.168.1.19")
@@ -37,7 +37,7 @@ func TestUsrMgmt(t *testing.T) {
 
 	t.Run("incrementing user requests not blocked user", func(t *testing.T) {
 		ip := "192.168.1.19"
-		b := bucket.NewBucket(1*bucket.SECOND,1*time.Second, 10, time.Hour)
+		b := bucket.NewBucket(1*bucket.SECOND, 1*time.Second, 10, time.Hour)
 		insertUser(b, ip, false, 3)
 		ratelimited := IncRequests(b, ip)
 		expected := 4
@@ -51,7 +51,7 @@ func TestUsrMgmt(t *testing.T) {
 
 	t.Run("incrementing user requests blocked user and restoring activity", func(t *testing.T) {
 		ip := "192.168.1.19"
-		b := bucket.NewBucket(1*bucket.SECOND,1*time.Second, 10, time.Hour)
+		b := bucket.NewBucket(1*bucket.SECOND, 1*time.Second, 10, time.Hour)
 		insertUser(b, ip, true, 10)
 
 		time.Sleep(2 * time.Second)
@@ -68,7 +68,7 @@ func TestUsrMgmt(t *testing.T) {
 
 	t.Run("incrementing user requests and blocking user", func(t *testing.T) {
 		ip := "192.168.1.19"
-		b := bucket.NewBucket(1*bucket.SECOND,1*time.Second, 10, time.Hour)
+		b := bucket.NewBucket(1*bucket.SECOND, 1*time.Second, 10, time.Hour)
 		insertUser(b, ip, false, 10)
 
 		time.Sleep(2 * time.Second)

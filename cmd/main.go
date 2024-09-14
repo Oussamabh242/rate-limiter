@@ -2,15 +2,13 @@ package main
 
 import (
 	"fmt"
+	"github.com/Oussamabh242/rate-limiter/pkg/middleware"
 	"log"
 	"net/http"
-	"github.com/Oussamabh242/rate-limiter/pkg/middleware"
 	"time"
 
 	"github.com/gorilla/mux"
 )
-
-
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "hello there")
@@ -18,10 +16,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	r := mux.NewRouter()
-  t := middleware.InitThing(1*time.Minute,30*time.Second ,2 ,time.Minute*2)
+	t := middleware.InitThing(1*time.Minute, 30*time.Second, 2, time.Minute*2)
 	r.Use(t.Middleware)
 	r.HandleFunc("/", handler).Methods("GET")
-  r.Use()
+	r.Use()
 	srv := http.Server{
 		Handler: r,
 		Addr:    "0.0.0.0:3000",
